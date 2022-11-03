@@ -1,34 +1,58 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Archie's Take Home Exercise
 
-## Getting Started
+SpaceX Missions list app where you can see and search for any of the past missions of this innovative companies.
 
-First, run the development server:
+## Features
+
+- NextJS project
+- Use TypeScript
+- Use SpaceX's GraphQL API
+- Use Chakra UI
+- Mission search
+- The app is responsive
+
+## Feedback
+
+This project doesn't make use of NextJS server side functions given that state variables from the client-side can't be accessed from `getServerSideProps` as it runs on the server. It would require to pass the data through query params to make it available server-side, which is not the best approach in terms of scalability and maintenance.
+
+## Installation
+
+You can install this project with npm
 
 ```bash
-npm run dev
-# or
-yarn dev
+  npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Run Locally
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+Clone the project
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+```bash
+  git clone https://github.com/jorgeruvalcaba/archie-take-home-excercise
+```
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+Go to the project directory
 
-## Learn More
+```bash
+  cd archie-take-home-excercise
+```
 
-To learn more about Next.js, take a look at the following resources:
+Install dependencies
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+  npm install
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+Start the server
 
-## Deploy on Vercel
+```bash
+  npm run dev
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Demo
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+You can see the project alive [here](archie-take-home-excercise.vercel.app/).
+
+## Authors
+
+- [@jorgeruvalcaba](https://www.github.com/jorgeruvalcaba)
