@@ -1,4 +1,4 @@
-import { useState, ChangeEvent, useCallback, useEffect } from 'react'
+import { useState, ChangeEvent, useMemo, useCallback } from 'react'
 import { useQuery } from '@apollo/client'
 import {
   Container,
@@ -11,54 +11,39 @@ import {
 } from '@chakra-ui/react'
 import { format } from 'date-fns'
 import Link from 'next/link'
-import _ from 'lodash'
+import { debounce } from 'lodash'
 
 import client from '../graphql/client'
 import { Header } from '../components/Header'
 import Logo from '../public/spacex-white.svg'
 import { LAUNCHES_QUERY } from '../graphql/gql/launches'
-import {
-  PAGE_SIZE,
-  TOTAL_LAUNCHES,
-  DEFAULT_CARD_IMAGE,
-} from '../constants/dashboard'
+import { DEFAULT_CARD_IMAGE } from '../constants/dashboard'
 import { LaunchesPastQuery } from '../graphql/types/graphql'
 import { Footer } from '../components/Footer'
 import { Card } from '../components/Card'
 
 export default function Home() {
-  const [page, setPage] = useState(0)
   const [searchValue, setSearchValue] = useState('')
-  const { loading, error, data, refetch } = useQuery<LaunchesPastQuery>(
+  const { loading, data, refetch } = useQuery<LaunchesPastQuery>(
     LAUNCHES_QUERY,
     {
       client,
       variables: {
-        // limit: PAGE_SIZE,
-        offset: page * PAGE_SIZE,
         find: {
           mission_name: searchValue,
         },
       },
     }
   )
-  const debouncer = useCallback(_.debounce(refetch, 1000), [])
+  const debounceSearch = useMemo(() => debounce(refetch, 750), [refetch])
 
-  useEffect(() => {
-    const refetchData = setTimeout(() => {
-      debouncer()
-    }, 1500)
-
-    return () => clearTimeout(refetchData)
-  }, [searchValue])
-
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) =>
-    setSearchValue(event.target.value)
-
-  console.log({ data, searchValue })
-
-  const pageNum = Math.ceil(TOTAL_LAUNCHES / PAGE_SIZE)
-  const isLastPage = page + 1 === pageNum
+  const handleChange = useCallback(
+    (event: ChangeEvent<HTMLInputElement>) => {
+      setSearchValue(event.target.value)
+      debounceSearch()
+    },
+    [debounceSearch]
+  )
 
   return (
     <Container bg="black" minW="100%" minH="100vh" centerContent>
@@ -80,19 +65,6 @@ export default function Home() {
         background="white"
         marginBottom={20}
       />
-
-      {/* <nav style={{ display: 'flex', justifyContent: 'space-between' }}>
-        <button disabled={!page} onClick={() => setPage((prev) => prev - 1)}>
-          Previous
-        </button>
-        <span>Page {page + 1}</span>
-        <button
-          disabled={isLastPage}
-          onClick={() => setPage((prev) => prev + 1)}
-        >
-          Next
-        </button>
-      </nav> */}
 
       {loading ? (
         <Center w="full" h="full" bg="black" height={40}>
